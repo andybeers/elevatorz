@@ -9,13 +9,11 @@ export default Ember.Component.extend({
   elevatorService: inject.service('elevator'),
 
   layout: hbs`
-    {{#each elevatorService.allElevators as |elevator|}}
-      <ul>
-        <li>
-          Elevator #{{elevator.id}} --
-          Floor: {{elevator.currentFloor}}
-        </li>
-      </ul>
-    {{/each}}
+    <div class="wrapper">
+      {{#each elevatorService.allElevators as |elevator|}}
+        {{elevator-single elevator=elevator}}
+      {{/each}}
+      {{lobby-controls summonElevator=elevatorService.summonElevator}}
+    </div>
   `
 });

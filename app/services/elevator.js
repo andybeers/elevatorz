@@ -33,5 +33,11 @@ export default Ember.Service.extend(ActionHandler, {
   // Actions
   // ---------------------------------------------------------------------------
   actions: {
+    summonElevator() {
+      const elevators = this.get('allElevators');
+      const availableElevators = elevators.filter(elev => !elev.inTransit).sort((a, b) => a.currentFloor > b.currentFloor);
+      const selectedElevatorIndex = elevators.findIndex(ele => ele.id === availableElevators[0].id);
+      console.log('index', selectedElevatorIndex);
+    }
   }
 });

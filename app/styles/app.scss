@@ -1,0 +1,15 @@
+@import 'ember-radical/styles';
+
+.wrapper {
+  margin: 1em;
+}
+
+.elevator-single {
+  padding: 1em;
+  margin: .5em;  
+  border: 1px solid red;
+}
+
+.doorsOpen {
+  border: 1px solid green;
+}
