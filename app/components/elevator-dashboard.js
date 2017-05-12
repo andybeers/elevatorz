@@ -8,12 +8,14 @@ export default Ember.Component.extend({
 
   elevatorService: inject.service('elevator'),
 
+  // Layout
+  // ---------------------------------------------------------------------------
   layout: hbs`
     <div class="wrapper">
       {{#each elevatorService.allElevators as |elevator|}}
         {{elevator-single elevator=elevator}}
       {{/each}}
-      {{lobby-controls summonElevator=elevatorService.summonElevator}}
+      {{lobby-controls}}
     </div>
   `
 });

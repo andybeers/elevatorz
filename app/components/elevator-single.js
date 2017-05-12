@@ -2,6 +2,9 @@ import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 
 export default Ember.Component.extend({
+
+  // Layout
+  // ---------------------------------------------------------------------------
   layout: hbs`
     <div class="elevator-single {{if elevator.doorsOpen doorsOpen}}">
       <h3>#{{elevator.id}}</h3>

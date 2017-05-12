@@ -12,19 +12,19 @@ export default Ember.Service.extend(ActionHandler, {
   allElevators: [
     {
       id: 1,
-      currentFloor: 1,
+      currentFloor: 3,
       inTransit: false,
       doorsOpen: false
     },
     {
       id: 2,
-      currentFloor: 1,
+      currentFloor: 4,
       inTransit: false,
       doorsOpen: false
     },
     {
       id: 3,
-      currentFloor: 1,
+      currentFloor: 5,
       inTransit: false,
       doorsOpen: false
     }
@@ -34,10 +34,12 @@ export default Ember.Service.extend(ActionHandler, {
   // ---------------------------------------------------------------------------
   actions: {
     summonElevator() {
+      console.log('Oh boy, here I go killing again.');
       const elevators = this.get('allElevators');
       const availableElevators = elevators.filter(elev => !elev.inTransit).sort((a, b) => a.currentFloor > b.currentFloor);
-      const selectedElevatorIndex = elevators.findIndex(ele => ele.id === availableElevators[0].id);
-      console.log('index', selectedElevatorIndex);
+      const selectedIndex = elevators.findIndex(ele => ele.id === availableElevators[0].id);
+      const selectedElev = this.get('allElevators').objectAt(selectedIndex);
+      Ember.set(selectedElev, 'currentFloor', 1);
     }
   }
 });
