@@ -12,7 +12,7 @@ export default Ember.Service.extend(ActionHandler, {
   allElevators: [
     {
       id: 1,
-      currentFloor: 3,
+      currentFloor: 5,
       inTransit: false,
       doorsOpen: false
     },
@@ -24,7 +24,7 @@ export default Ember.Service.extend(ActionHandler, {
     },
     {
       id: 3,
-      currentFloor: 5,
+      currentFloor: 2,
       inTransit: false,
       doorsOpen: false
     }
@@ -33,13 +33,33 @@ export default Ember.Service.extend(ActionHandler, {
   // Actions
   // ---------------------------------------------------------------------------
   actions: {
-    summonElevator() {
+    /**
+     * Selects the elevator closest to floor 1 and summons it to the first
+     * floor.
+     * @method summon
+     * @return {undefined}
+     */
+    summon() {
       console.log('Oh boy, here I go killing again.');
       const elevators = this.get('allElevators');
       const availableElevators = elevators.filter(elev => !elev.inTransit).sort((a, b) => a.currentFloor > b.currentFloor);
       const selectedIndex = elevators.findIndex(ele => ele.id === availableElevators[0].id);
-      const selectedElev = this.get('allElevators').objectAt(selectedIndex);
+      const selectedElev = elevators.objectAt(selectedIndex);
       Ember.set(selectedElev, 'currentFloor', 1);
+    },
+    /**
+     * Dispatches an elevator to the specified floor
+     * @method dispatch
+     * @param elevID ID property of target elevator to dispatch
+     * @param floor Destination floor
+     * @return {undefined}
+     */
+    dispatch(elevID, floor) {
+      console.log('Zug Zug');
+      const elevators = this.get('allElevators');
+      const targetIndex = elevators.findIndex(elev => elev.id === elevID);
+      const selectedElev = elevators.objectAt(targetIndex);
+      Ember.set(selectedElev, 'currentFloor', floor);
     }
   }
 });

@@ -13,7 +13,7 @@ export default Ember.Component.extend({
   layout: hbs`
     <div class="lobby-controls">
       {{#rad-button 
-        click=(action 'summonElevator' target=elevatorService)}}
+        click=(action 'summon' target=elevatorService)}}
         I SUMMON THEE
       {{/rad-button}}  
     </div>
