@@ -34,8 +34,8 @@ export default Ember.Component.extend({
       </div>
       <img src='/assets/images/doors.jpg' alt="Tacky Gilded Elevator Doors">
     </div>
+    <div class="status-bulb {{if elevator.inTransit 'unavailable'}}"></div>
     <div class="single-controls">
-      <div class="status-bulb {{if elevator.inTransit 'unavailable'}}"></div>
       {{#if (and (eq elevator.currentFloor 1) elevator.doorsOpen)}}
         {{input 
           placeholder='Where to?'
