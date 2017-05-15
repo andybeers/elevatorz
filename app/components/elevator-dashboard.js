@@ -5,7 +5,6 @@ const { inject } = Ember;
 export default Ember.Component.extend({
   // Injections
   // ---------------------------------------------------------------------------
-
   elevatorService: inject.service('elevator'),
 
   // Layout

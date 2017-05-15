@@ -5,7 +5,6 @@ const { inject } = Ember;
 export default Ember.Component.extend({
   // Injections
   // ---------------------------------------------------------------------------
-
   elevatorService: inject.service('elevator'),
 
   // Properties
@@ -15,6 +14,14 @@ export default Ember.Component.extend({
    * @type {number}
    */
   inputFloor: '',
+
+  // Actions
+  // ---------------------------------------------------------------------------
+  actions: {
+    resetInputField() {
+      this.set('inputFloor', '');
+    }
+  },
 
   // Layout
   // ---------------------------------------------------------------------------
@@ -27,7 +34,7 @@ export default Ember.Component.extend({
           placeholder='Where to?'
           value=inputFloor}}
         {{#rad-button
-          click=(action 'dispatch' elevator.id inputFloor target=elevatorService)}}
+          click=(pipe-action (action 'dispatch' elevator.id inputFloor target=elevatorService) (action 'resetInputField') )}}
           GO
         {{/rad-button}}
       {{/if}}
