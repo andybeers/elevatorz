@@ -28,7 +28,9 @@ export default Ember.Component.extend({
   layout: hbs`
     <div class="elevator-single {{if elevator.doorsOpen 'doorsOpen'}}">
       <div class="floor-box">
+        <h4 class="arrow {{if elevator.goingDown 'active'}}">&#x2228;</h4>
         <h4>{{elevator.currentFloor}}</h4>
+        <h4 class="arrow {{if elevator.goingUp 'active'}}">&#x2227;</h4>
       </div>
       <img src='/assets/images/doors.jpg' alt="Tacky Gilded Elevator Doors">
     </div>

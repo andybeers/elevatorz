@@ -22,9 +22,14 @@ h4 {
 }
 
 .floor-box {
+  display: flex;
+  justify-content: space-around;
   padding: 1em;
   background-color: black;
-  text-align: center;
+}
+
+.active {
+  color: red;
 }
 
 .lobby-controls {
@@ -35,10 +40,6 @@ h4 {
   padding: 1em;
   margin: .5em;  
 }
-
-// .doorsOpen {
-//   border: 1px solid green;
-// }
 
 .status-bulb {
   margin: 1em auto;

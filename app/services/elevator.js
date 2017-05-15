@@ -14,19 +14,25 @@ export default Ember.Service.extend(ActionHandler, {
       id: 1,
       currentFloor: 5,
       inTransit: false,
-      doorsOpen: true
+      doorsOpen: true,
+      goingUp: false,
+      goingDown: false
     },
     {
       id: 2,
       currentFloor: 4,
       inTransit: false,
-      doorsOpen: true
+      doorsOpen: true,
+      goingUp: false,
+      goingDown: false
     },
     {
       id: 3,
       currentFloor: 2,
       inTransit: false,
-      doorsOpen: true
+      doorsOpen: true,
+      goingUp: false,
+      goingDown: false
     }
   ],
 
@@ -54,15 +60,27 @@ export default Ember.Service.extend(ActionHandler, {
    * @return {undefined}
    */
   _traverseFloor(elevator, currentFloor, endFloor) {
-      endFloor = parseInt(endFloor, 10);
-      setTimeout(() => {
-        Ember.set(elevator, 'currentFloor', currentFloor);
-        if (currentFloor === endFloor) {
-          this._handleStatus(elevator);
-          return;
-        }
+    endFloor = parseInt(endFloor, 10);
+    const goingUp = currentFloor < endFloor ? true : false;
+    if (goingUp) {
+      Ember.set(elevator, 'goingUp', true);
+    } else {
+      Ember.set(elevator, 'goingDown', true);
+    }
+    setTimeout(() => {
+      Ember.set(elevator, 'currentFloor', currentFloor);
+      if (currentFloor === endFloor) {
+        Ember.set(elevator, 'goingUp', false);
+        Ember.set(elevator, 'goingDown', false);
+        this._handleStatus(elevator);
+        return;
+      }
+      if (goingUp) {
         this._traverseFloor(elevator, (currentFloor + 1), endFloor);
-      }, 1000);
+      } else {
+        this._traverseFloor(elevator, (currentFloor - 1), endFloor);
+      }
+    }, 1000);
   },
 
   // Actions
@@ -79,7 +97,8 @@ export default Ember.Service.extend(ActionHandler, {
       if (!availableElevators.length) { return; }
       const selectedIndex = elevators.findIndex(ele => ele.id === availableElevators[0].id);
       const selectedElev = elevators.objectAt(selectedIndex);
-      Ember.set(selectedElev, 'currentFloor', 1);
+      this._handleStatus(selectedElev);
+      this._traverseFloor(selectedElev, (selectedElev.currentFloor - 1), 1);
     },
     /**
      * Dispatches an elevator to the specified floor
@@ -90,10 +109,13 @@ export default Ember.Service.extend(ActionHandler, {
      */
     dispatch(elevID, floor) {
       if (!floor || isNaN(floor)) { return; }
+      floor = parseInt(floor, 10);
 
       const elevators = this.get('allElevators');
       const targetIndex = elevators.findIndex(elev => elev.id === elevID);
       const targetElevator = elevators.objectAt(targetIndex);
+      if (targetElevator.currentFloor === floor) { return; }
+
       this._handleStatus(targetElevator);
       this._traverseFloor(targetElevator, 2, floor);
     }
