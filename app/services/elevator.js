@@ -30,6 +30,31 @@ export default Ember.Service.extend(ActionHandler, {
     }
   ],
 
+  // Methods
+  // ---------------------------------------------------------------------------
+  /**
+   * Handles 'opening' elevator doors and marking it available to be dispatched
+   * @method _markAvailable
+   * @private
+   * @param elevator The target elevator to be updated
+   * @return {undefined}
+   */
+  _markAvailable(elevator) {
+    elevator.doorsOpen = true;
+    elevator.inTransit = false;
+  },
+  /**
+   * Handles 'closing' elevator doors and marking it unavailable when dispatched
+   * @method _markAvailable
+   * @private
+   * @param elevator The target elevator to be updated
+   * @return {undefined}
+   */
+  _markUnavailable(elevator) {
+    elevator.doorsOpen = false;
+    elevator.inTransit = true;
+  },
+
   // Actions
   // ---------------------------------------------------------------------------
   actions: {
@@ -56,8 +81,8 @@ export default Ember.Service.extend(ActionHandler, {
     dispatch(elevID, floor) {
       const elevators = this.get('allElevators');
       const targetIndex = elevators.findIndex(elev => elev.id === elevID);
-      const selectedElev = elevators.objectAt(targetIndex);
-      Ember.set(selectedElev, 'currentFloor', floor);
+      const targetElevator = elevators.objectAt(targetIndex);
+      Ember.set(targetElevator, 'currentFloor', floor);
     }
   }
 });
