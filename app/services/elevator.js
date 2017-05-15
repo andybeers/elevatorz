@@ -33,7 +33,7 @@ export default Ember.Service.extend(ActionHandler, {
   // Methods
   // ---------------------------------------------------------------------------
   /**
-   * Handles toggling of elevator doors and availability properties
+   * Handles toggling of elevator doorsOpen and inTransit properties
    * @method _handleStatus
    * @private
    * @param elevator The target elevator to be updated
@@ -43,15 +43,25 @@ export default Ember.Service.extend(ActionHandler, {
     Ember.set(elevator, 'doorsOpen', !elevator.doorsOpen);
     Ember.set(elevator, 'inTransit', !elevator.inTransit);
   },
-  _traverseFloor(elevator, startFloor, endFloor) {
+  /**
+   * Recursive method to send an elevator from floor to floor with
+   * simulated delay, stopping at the final destination.
+   * @method _traverseFloor
+   * @private
+   * @param elevator The target elevator
+   * @param currentFloor The current floor
+   * @param endFloor The final destination floor
+   * @return {undefined}
+   */
+  _traverseFloor(elevator, currentFloor, endFloor) {
       endFloor = parseInt(endFloor, 10);
       setTimeout(() => {
-        Ember.set(elevator, 'currentFloor', startFloor);
-        if (startFloor === endFloor) {
+        Ember.set(elevator, 'currentFloor', currentFloor);
+        if (currentFloor === endFloor) {
           this._handleStatus(elevator);
           return;
         }
-        this._traverseFloor(elevator, (startFloor + 1), endFloor);
+        this._traverseFloor(elevator, (currentFloor + 1), endFloor);
       }, 1000);
   },
 
@@ -59,8 +69,7 @@ export default Ember.Service.extend(ActionHandler, {
   // ---------------------------------------------------------------------------
   actions: {
     /**
-     * Selects the elevator closest to floor 1 and summons it to the first
-     * floor.
+     * Summons the closest available elevator to the first floor
      * @method summon
      * @return {undefined}
      */
