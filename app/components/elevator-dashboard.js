@@ -15,6 +15,9 @@ export default Ember.Component.extend({
         {{elevator-single elevator=elevator}}
       {{/each}}
     </div>
+    {{#if elevatorService.unavailable}}
+      {{#rad-alert brand='danger'}}No available elevators!{{/rad-alert}}
+    {{/if}}
     {{lobby-controls}}
   `
 });

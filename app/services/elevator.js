@@ -36,6 +36,8 @@ export default Ember.Service.extend(ActionHandler, {
     }
   ],
 
+  unavailable: false,
+
   // Methods
   // ---------------------------------------------------------------------------
   /**
@@ -45,7 +47,7 @@ export default Ember.Service.extend(ActionHandler, {
    * @param elevator The target elevator to be updated
    * @return {undefined}
    */
-  _handleStatus(elevator) {
+  _handleStatus(elevator, goingUp) {
     Ember.set(elevator, 'doorsOpen', !elevator.doorsOpen);
     Ember.set(elevator, 'inTransit', !elevator.inTransit);
   },
@@ -61,21 +63,22 @@ export default Ember.Service.extend(ActionHandler, {
    */
   _traverseFloor(elevator, currentFloor, endFloor) {
     endFloor = parseInt(endFloor, 10);
-    const goingUp = currentFloor < endFloor ? true : false;
-    if (goingUp) {
+    if (currentFloor < endFloor) {
       Ember.set(elevator, 'goingUp', true);
-    } else {
+    } else if (currentFloor > endFloor) {
       Ember.set(elevator, 'goingDown', true);
     }
+
     setTimeout(() => {
       Ember.set(elevator, 'currentFloor', currentFloor);
       if (currentFloor === endFloor) {
         Ember.set(elevator, 'goingUp', false);
         Ember.set(elevator, 'goingDown', false);
         this._handleStatus(elevator);
+        this.set('unavailable', false);
         return;
       }
-      if (goingUp) {
+      if (currentFloor < endFloor) {
         this._traverseFloor(elevator, (currentFloor + 1), endFloor);
       } else {
         this._traverseFloor(elevator, (currentFloor - 1), endFloor);
@@ -94,9 +97,13 @@ export default Ember.Service.extend(ActionHandler, {
     summon() {
       const elevators = this.get('allElevators');
       const availableElevators = elevators.filter(elev => !elev.inTransit).sort((a, b) => a.currentFloor > b.currentFloor);
-      if (!availableElevators.length) { return; }
+      if (!availableElevators.length) {
+        this.set('unavailable', true);
+        return;
+      }
       const selectedIndex = elevators.findIndex(ele => ele.id === availableElevators[0].id);
       const selectedElev = elevators.objectAt(selectedIndex);
+      if (selectedElev.currentFloor === 1) { return; }
       this._handleStatus(selectedElev);
       this._traverseFloor(selectedElev, (selectedElev.currentFloor - 1), 1);
     },
