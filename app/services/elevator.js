@@ -37,6 +37,8 @@ export default Ember.Service.extend(ActionHandler, {
   ],
 
   unavailable: false,
+  badFloor: false,
+  topFloor: 25,
 
   // Methods
   // ---------------------------------------------------------------------------
@@ -115,8 +117,13 @@ export default Ember.Service.extend(ActionHandler, {
      * @return {undefined}
      */
     dispatch(elevID, floor) {
+      this.set('badFloor', false);
       if (!floor || isNaN(floor)) { return; }
       floor = parseInt(floor, 10);
+      if (floor > this.get('topFloor')) {
+        this.set('badFloor', true);
+        return;
+       }
 
       const elevators = this.get('allElevators');
       const targetIndex = elevators.findIndex(elev => elev.id === elevID);

@@ -15,9 +15,14 @@ export default Ember.Component.extend({
         {{elevator-single elevator=elevator}}
       {{/each}}
     </div>
-    {{#if elevatorService.unavailable}}
-      {{#rad-alert brand='danger'}}No available elevators!{{/rad-alert}}
-    {{/if}}
+      <div class="alert-box">
+        {{#if elevatorService.unavailable}}
+          {{#rad-alert brand='danger'}}No available elevators!{{/rad-alert}}
+        {{/if}}
+        {{#if elevatorService.badFloor}}
+          {{#rad-alert brand='danger'}}Highest floor is 25{{/rad-alert}}
+        {{/if}}
+      </div>
     {{lobby-controls}}
   `
 });
