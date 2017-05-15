@@ -10,11 +10,11 @@ export default Ember.Component.extend({
   // Layout
   // ---------------------------------------------------------------------------
   layout: hbs`
-    <div class="wrapper">
+    <div class="wrapper flex">
       {{#each elevatorService.allElevators as |elevator|}}
         {{elevator-single elevator=elevator}}
       {{/each}}
-      {{lobby-controls}}
     </div>
+    {{lobby-controls}}
   `
 });

@@ -27,8 +27,13 @@ export default Ember.Component.extend({
   // ---------------------------------------------------------------------------
   layout: hbs`
     <div class="elevator-single {{if elevator.doorsOpen 'doorsOpen'}}">
-      <h4>#{{elevator.id}}</h4>
-      <p>Current floor: <span><b>{{elevator.currentFloor}}</b></span></p> 
+      <div class="floor-box">
+        <h4>{{elevator.currentFloor}}</h4>
+      </div>
+      <img src='/assets/images/doors.jpg' alt="Tacky Gilded Elevator Doors">
+    </div>
+    <div class="single-controls">
+      <div class="status-bulb {{if elevator.inTransit 'unavailable'}}"></div>
       {{#if (and (eq elevator.currentFloor 1) elevator.doorsOpen)}}
         {{input 
           placeholder='Where to?'
@@ -38,9 +43,6 @@ export default Ember.Component.extend({
           GO
         {{/rad-button}}
       {{/if}}
-      <div class="status-bulb {{if elevator.inTransit 'unavailable'}}"></div>
-      {{!--TODO: figure out img PATH--}} 
-      {{!--<img src='../../public/assets/img/doors.jpg' alt="Tacky Gilded Elevator Doors">--}}
     </div>
   `
 });

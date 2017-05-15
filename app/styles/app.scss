@@ -1,24 +1,41 @@
 @import 'ember-radical/styles';
 
-span {
+h4 {
   font-size: 2em;
+  color: ghostwhite;
 }
 
 .wrapper {
-  margin: 1em;
+  max-width: 75%;
+  margin: 1em auto;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-around;
+}
+
+.floor-box {
+  padding: 1em;
+  background-color: black;
+  text-align: center;
+}
+
+.lobby-controls {
+  margin: 2em;
 }
 
 .elevator-single {
   padding: 1em;
   margin: .5em;  
-  border: 1px solid red;
 }
 
-.doorsOpen {
-  border: 1px solid green;
-}
+// .doorsOpen {
+//   border: 1px solid green;
+// }
 
 .status-bulb {
+  margin: 1em auto;
   height: 25px;
   width: 25px;
   background-color: green;

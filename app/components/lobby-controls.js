@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   // Layout
   // ---------------------------------------------------------------------------
   layout: hbs`
-    <div class="lobby-controls">
+    <div class="lobby-controls flex">
       {{#rad-button 
         click=(action 'summon' target=elevatorService)}}
         I SUMMON THEE
