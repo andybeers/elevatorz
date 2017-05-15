@@ -43,6 +43,17 @@ export default Ember.Service.extend(ActionHandler, {
     Ember.set(elevator, 'doorsOpen', !elevator.doorsOpen);
     Ember.set(elevator, 'inTransit', !elevator.inTransit);
   },
+  _traverseFloor(elevator, startFloor, endFloor) {
+      endFloor = parseInt(endFloor, 10);
+      setTimeout(() => {
+        Ember.set(elevator, 'currentFloor', startFloor);
+        if (startFloor === endFloor) {
+          this._handleStatus(elevator);
+          return;
+        }
+        this._traverseFloor(elevator, (startFloor + 1), endFloor);
+      }, 1000);
+  },
 
   // Actions
   // ---------------------------------------------------------------------------
@@ -56,6 +67,7 @@ export default Ember.Service.extend(ActionHandler, {
     summon() {
       const elevators = this.get('allElevators');
       const availableElevators = elevators.filter(elev => !elev.inTransit).sort((a, b) => a.currentFloor > b.currentFloor);
+      if (!availableElevators.length) { return; }
       const selectedIndex = elevators.findIndex(ele => ele.id === availableElevators[0].id);
       const selectedElev = elevators.objectAt(selectedIndex);
       Ember.set(selectedElev, 'currentFloor', 1);
@@ -68,14 +80,13 @@ export default Ember.Service.extend(ActionHandler, {
      * @return {undefined}
      */
     dispatch(elevID, floor) {
+      if (!floor || isNaN(floor)) { return; }
+
       const elevators = this.get('allElevators');
       const targetIndex = elevators.findIndex(elev => elev.id === elevID);
       const targetElevator = elevators.objectAt(targetIndex);
       this._handleStatus(targetElevator);
-      setTimeout(() => {
-        Ember.set(targetElevator, 'currentFloor', floor);
-        this._handleStatus(targetElevator);
-      }, 3000);
+      this._traverseFloor(targetElevator, 2, floor);
     }
   }
 });

@@ -22,13 +22,15 @@ export default Ember.Component.extend({
     <div class="elevator-single {{if elevator.doorsOpen 'doorsOpen'}}">
       <h4>#{{elevator.id}}</h4>
       <p>Current floor: <span><b>{{elevator.currentFloor}}</b></span></p> 
-      {{input 
-        placeholder='Where to?'
-        value=inputFloor}}
-      {{#rad-button
-        click=(action 'dispatch' elevator.id inputFloor target=elevatorService)}}
-        GO
-      {{/rad-button}}
+      {{#if (and (eq elevator.currentFloor 1) elevator.doorsOpen)}}
+        {{input 
+          placeholder='Where to?'
+          value=inputFloor}}
+        {{#rad-button
+          click=(action 'dispatch' elevator.id inputFloor target=elevatorService)}}
+          GO
+        {{/rad-button}}
+      {{/if}}
       <div class="status-bulb {{if elevator.inTransit 'unavailable'}}"></div>
       {{!--TODO: figure out img PATH--}} 
       {{!--<img src='../../public/assets/img/doors.jpg' alt="Tacky Gilded Elevator Doors">--}}

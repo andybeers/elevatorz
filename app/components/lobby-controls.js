@@ -15,7 +15,7 @@ export default Ember.Component.extend({
       {{#rad-button 
         click=(action 'summon' target=elevatorService)}}
         I SUMMON THEE
-      {{/rad-button}}  
+      {{/rad-button}}
     </div>
   `
 });
