@@ -1,6 +1,11 @@
 import Ember from 'ember';
 const { ActionHandler } = Ember;
 
+/**
+ * @class Service.Elevator
+ * @constructor
+ * @extends Ember.Service
+ */
 export default Ember.Service.extend(ActionHandler, {
   // Properties
   // ---------------------------------------------------------------------------
