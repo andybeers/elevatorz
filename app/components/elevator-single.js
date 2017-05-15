@@ -19,7 +19,7 @@ export default Ember.Component.extend({
   // Layout
   // ---------------------------------------------------------------------------
   layout: hbs`
-    <div class="elevator-single {{if elevator.doorsOpen doorsOpen}}">
+    <div class="elevator-single {{if elevator.doorsOpen 'doorsOpen'}}">
       <h4>#{{elevator.id}}</h4>
       <p>Current floor: <span><b>{{elevator.currentFloor}}</b></span></p> 
       {{input 
@@ -29,7 +29,7 @@ export default Ember.Component.extend({
         click=(action 'dispatch' elevator.id inputFloor target=elevatorService)}}
         GO
       {{/rad-button}}
-      <div class="status-bulb"></div>
+      <div class="status-bulb {{if elevator.inTransit 'unavailable'}}"></div>
       {{!--TODO: figure out img PATH--}} 
       {{!--<img src='../../public/assets/img/doors.jpg' alt="Tacky Gilded Elevator Doors">--}}
     </div>

@@ -14,45 +14,34 @@ export default Ember.Service.extend(ActionHandler, {
       id: 1,
       currentFloor: 5,
       inTransit: false,
-      doorsOpen: false
+      doorsOpen: true
     },
     {
       id: 2,
       currentFloor: 4,
       inTransit: false,
-      doorsOpen: false
+      doorsOpen: true
     },
     {
       id: 3,
       currentFloor: 2,
       inTransit: false,
-      doorsOpen: false
+      doorsOpen: true
     }
   ],
 
   // Methods
   // ---------------------------------------------------------------------------
   /**
-   * Handles 'opening' elevator doors and marking it available to be dispatched
-   * @method _markAvailable
+   * Handles toggling of elevator doors and availability properties
+   * @method _handleStatus
    * @private
    * @param elevator The target elevator to be updated
    * @return {undefined}
    */
-  _markAvailable(elevator) {
-    elevator.doorsOpen = true;
-    elevator.inTransit = false;
-  },
-  /**
-   * Handles 'closing' elevator doors and marking it unavailable when dispatched
-   * @method _markAvailable
-   * @private
-   * @param elevator The target elevator to be updated
-   * @return {undefined}
-   */
-  _markUnavailable(elevator) {
-    elevator.doorsOpen = false;
-    elevator.inTransit = true;
+  _handleStatus(elevator) {
+    Ember.set(elevator, 'doorsOpen', !elevator.doorsOpen);
+    Ember.set(elevator, 'inTransit', !elevator.inTransit);
   },
 
   // Actions
@@ -82,7 +71,11 @@ export default Ember.Service.extend(ActionHandler, {
       const elevators = this.get('allElevators');
       const targetIndex = elevators.findIndex(elev => elev.id === elevID);
       const targetElevator = elevators.objectAt(targetIndex);
-      Ember.set(targetElevator, 'currentFloor', floor);
+      this._handleStatus(targetElevator);
+      setTimeout(() => {
+        Ember.set(targetElevator, 'currentFloor', floor);
+        this._handleStatus(targetElevator);
+      }, 3000);
     }
   }
 });
