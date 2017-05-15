@@ -29,6 +29,7 @@ export default Ember.Component.extend({
         click=(action 'dispatch' elevator.id inputFloor target=elevatorService)}}
         GO
       {{/rad-button}}
+      <div class="status-bulb"></div>
       {{!--TODO: figure out img PATH--}} 
       {{!--<img src='../../public/assets/img/doors.jpg' alt="Tacky Gilded Elevator Doors">--}}
     </div>

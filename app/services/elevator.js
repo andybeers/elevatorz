@@ -40,7 +40,6 @@ export default Ember.Service.extend(ActionHandler, {
      * @return {undefined}
      */
     summon() {
-      console.log('Oh boy, here I go killing again.');
       const elevators = this.get('allElevators');
       const availableElevators = elevators.filter(elev => !elev.inTransit).sort((a, b) => a.currentFloor > b.currentFloor);
       const selectedIndex = elevators.findIndex(ele => ele.id === availableElevators[0].id);
@@ -55,7 +54,6 @@ export default Ember.Service.extend(ActionHandler, {
      * @return {undefined}
      */
     dispatch(elevID, floor) {
-      console.log('Zug Zug');
       const elevators = this.get('allElevators');
       const targetIndex = elevators.findIndex(elev => elev.id === elevID);
       const selectedElev = elevators.objectAt(targetIndex);
