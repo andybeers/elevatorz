@@ -35,9 +35,23 @@ export default Ember.Service.extend(ActionHandler, {
       goingDown: false
     }
   ],
-
+  /**
+   * True when all elevators are in motion. Error message hook.
+   * @property unavailable
+   * @type {boolean}
+   */
   unavailable: false,
+  /**
+   * True when destination floor input exceeds this.topFloor value. Error message hook.
+   * @property badFloor
+   * @type {boolean}
+   */
   badFloor: false,
+  /**
+   * Set maximum possible floor
+   * @property topFloor
+   * @type {number}
+   */
   topFloor: 25,
 
   // Methods
@@ -70,7 +84,8 @@ export default Ember.Service.extend(ActionHandler, {
     } else if (currentFloor > endFloor) {
       Ember.set(elevator, 'goingDown', true);
     }
-
+    // setTimeout magic for simulating the delay of elevators moving betwen floors
+    // When end floor is reached, resets all motion-related elevator and service properties
     setTimeout(() => {
       Ember.set(elevator, 'currentFloor', currentFloor);
       if (currentFloor === endFloor) {
