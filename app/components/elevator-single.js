@@ -10,6 +10,7 @@ export default Ember.Component.extend({
   // Properties
   // ---------------------------------------------------------------------------
   /**
+   * Stores user input for destination floor.
    * @property inputFloor
    * @type {number}
    */
@@ -18,6 +19,11 @@ export default Ember.Component.extend({
   // Actions
   // ---------------------------------------------------------------------------
   actions: {
+  /**
+   * Resets input field to blank after GO button pressed
+   * @method resetInputField
+   * @return {undefined}
+   */
     resetInputField() {
       this.set('inputFloor', '');
     }
