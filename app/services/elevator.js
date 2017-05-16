@@ -123,11 +123,11 @@ export default Ember.Service.extend(ActionHandler, {
         this.set('unavailable', true);
         return;
       }
-      const selectedIndex = elevators.findIndex(ele => ele.id === availableElevators[0].id);
-      const selectedElev = elevators.objectAt(selectedIndex);
-      if (selectedElev.currentFloor === 1) { return; }
-      this._handleStatus(selectedElev);
-      this._traverseFloor(selectedElev, (selectedElev.currentFloor - 1), 1);
+      const targetIndex = elevators.findIndex(ele => ele.id === availableElevators[0].id);
+      const targetElevator = elevators.objectAt(targetIndex);
+      if (targetElevator.currentFloor === 1) { return; }
+      this._handleStatus(targetElevator);
+      this._traverseFloor(targetElevator, (targetElevator.currentFloor - 1), 1);
     },
     /**
      * Dispatches an elevator to the specified floor
