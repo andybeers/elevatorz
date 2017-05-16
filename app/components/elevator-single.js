@@ -39,9 +39,10 @@ export default Ember.Component.extend({
       {{#if (and (eq elevator.currentFloor 1) elevator.doorsOpen)}}
         {{input 
           placeholder='Where to?'
-          value=inputFloor}}
+          value=inputFloor
+          enter=(pipe-action (action 'dispatch' elevator.id inputFloor target=elevatorService) (action 'resetInputField'))}}
         {{#rad-button
-          click=(pipe-action (action 'dispatch' elevator.id inputFloor target=elevatorService) (action 'resetInputField') )}}
+          click=(pipe-action (action 'dispatch' elevator.id inputFloor target=elevatorService) (action 'resetInputField'))}}
           GO
         {{/rad-button}}
       {{/if}}
