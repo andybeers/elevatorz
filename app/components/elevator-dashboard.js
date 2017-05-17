@@ -12,18 +12,24 @@ export default Ember.Component.extend({
     return new Promise(resolve => {
       setTimeout(() => {
         resolve(string);
-      }, 1000);
+      }, 2000);
     });
   },
 
-  actionThing: task(function*() {
-    const shout = yield this.doAsync('Hey guys.');
+  methodThing: task(function* () {
+    console.log('Don\'t be sad...');
+    let shout = yield this.doAsync('I\'m sorry, Dave...');
     console.log(shout);
-  }),
+    shout = yield this.doAsync('I know how you feel...');
+    console.log(shout);
+    shout = yield this.doAsync('It will get better...');
+    console.log(shout);
+  }).drop(),
 
-  init() {
-    this._super(...arguments);
-    this.get('actionThing').perform();
+  actions: {
+    actionThing() {
+      return this.get('methodThing').perform();
+    }
   },
 
   // Layout
@@ -43,5 +49,9 @@ export default Ember.Component.extend({
         {{/if}}
       </div>
     {{lobby-controls}}
+    {{#rad-button
+      click=(action 'actionThing')}}
+      CONSOLE
+    {{/rad-button}}
   `
 });

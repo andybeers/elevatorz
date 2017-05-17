@@ -68,7 +68,7 @@ export default Ember.Service.extend(ActionHandler, {
    * @param elevator The target elevator to be updated
    * @return {undefined}
    */
-  _handleStatus(elevator, goingUp) {
+  _handleStatus(elevator) {
     Ember.set(elevator, 'doorsOpen', !elevator.doorsOpen);
     Ember.set(elevator, 'inTransit', !elevator.inTransit);
   },
@@ -107,6 +107,36 @@ export default Ember.Service.extend(ActionHandler, {
       }
     }, 1000);
   },
+  summonElevator() {
+    const elevators = this.get('allElevators');
+    const availableElevators = elevators.filter(elev => !elev.inTransit).sort((a, b) => a.currentFloor > b.currentFloor);
+    if (!availableElevators.length) {
+      this.set('unavailable', true);
+      return;
+    }
+    const targetIndex = elevators.findIndex(ele => ele.id === availableElevators[0].id);
+    const targetElevator = elevators.objectAt(targetIndex);
+    if (targetElevator.currentFloor === 1) { return; }
+    this._handleStatus(targetElevator);
+    this._traverseFloor(targetElevator, (targetElevator.currentFloor - 1), 1);
+  },
+  sendElevator(elevID, floor) {
+    this.set('badFloor', false);
+    if (!floor || isNaN(floor)) { return; }
+    floor = parseInt(floor, 10);
+    if (floor > this.get('topFloor')) {
+      this.set('badFloor', true);
+      return;
+      }
+
+    const elevators = this.get('allElevators');
+    const targetIndex = elevators.findIndex(elev => elev.id === elevID);
+    const targetElevator = elevators.objectAt(targetIndex);
+    if (targetElevator.currentFloor === floor) { return; }
+
+    this._handleStatus(targetElevator);
+    this._traverseFloor(targetElevator, 2, floor);
+  },
 
   // Actions
   // ---------------------------------------------------------------------------
@@ -117,17 +147,7 @@ export default Ember.Service.extend(ActionHandler, {
      * @return {undefined}
      */
     summon() {
-      const elevators = this.get('allElevators');
-      const availableElevators = elevators.filter(elev => !elev.inTransit).sort((a, b) => a.currentFloor > b.currentFloor);
-      if (!availableElevators.length) {
-        this.set('unavailable', true);
-        return;
-      }
-      const targetIndex = elevators.findIndex(ele => ele.id === availableElevators[0].id);
-      const targetElevator = elevators.objectAt(targetIndex);
-      if (targetElevator.currentFloor === 1) { return; }
-      this._handleStatus(targetElevator);
-      this._traverseFloor(targetElevator, (targetElevator.currentFloor - 1), 1);
+      this.summonElevator();
     },
     /**
      * Dispatches an elevator to the specified floor
@@ -137,21 +157,7 @@ export default Ember.Service.extend(ActionHandler, {
      * @return {undefined}
      */
     dispatch(elevID, floor) {
-      this.set('badFloor', false);
-      if (!floor || isNaN(floor)) { return; }
-      floor = parseInt(floor, 10);
-      if (floor > this.get('topFloor')) {
-        this.set('badFloor', true);
-        return;
-       }
-
-      const elevators = this.get('allElevators');
-      const targetIndex = elevators.findIndex(elev => elev.id === elevID);
-      const targetElevator = elevators.objectAt(targetIndex);
-      if (targetElevator.currentFloor === floor) { return; }
-
-      this._handleStatus(targetElevator);
-      this._traverseFloor(targetElevator, 2, floor);
+      this.sendElevator(elevID, floor);
     }
   }
 });
