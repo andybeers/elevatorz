@@ -66,3 +66,9 @@ h4 {
 .single-controls {
   display: flex;
 }
+
+@include media-breakpoint-up(xl) {
+  body {
+    background-color: salmon;
+  }
+}

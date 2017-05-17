@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
-    "css-core": "git+https://git@git.healthsparq.net/scm/dev/css-core.git#v1.10.0",
     "ember-ajax": "^3.0.0",
     "ember-cli": "2.13.1",
     "ember-cli-app-version": "^3.0.0",
@@ -26,6 +25,7 @@
     "ember-cli-htmlbars": "^1.1.1",
     "ember-cli-htmlbars-inline-precompile": "^0.4.0",
     "ember-cli-inject-live-reload": "^1.4.1",
+    "ember-cli-prop-types": "^1.0.0",
     "ember-cli-qunit": "^4.0.0",
     "ember-cli-sass": "^6.1.3",
     "ember-cli-shims": "^1.1.0",
@@ -46,6 +46,7 @@
   },
   "private": true,
   "dependencies": {
+    "bootstrap": "^4.0.0-alpha.6",
     "ember-concurrency": "^0.8.3",
     "ember-truth-helpers": "^1.3.0"
   }

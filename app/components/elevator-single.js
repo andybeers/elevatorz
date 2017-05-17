@@ -1,8 +1,12 @@
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 const { inject } = Ember;
+import PropTypes from 'prop-types';
 
 export default Ember.Component.extend({
+  propTypes: {
+    elevator: PropTypes.object
+  },
   // Injections
   // ---------------------------------------------------------------------------
   elevatorService: inject.service('elevator'),
