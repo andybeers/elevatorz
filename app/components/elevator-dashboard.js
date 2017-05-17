@@ -1,11 +1,30 @@
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 const { inject } = Ember;
+import { task } from 'ember-concurrency';
 
 export default Ember.Component.extend({
   // Injections
   // ---------------------------------------------------------------------------
   elevatorService: inject.service('elevator'),
+
+  doAsync(string) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(string);
+      }, 1000);
+    });
+  },
+
+  actionThing: task(function*() {
+    const shout = yield this.doAsync('Hey guys.');
+    console.log(shout);
+  }),
+
+  init() {
+    this._super(...arguments);
+    this.get('actionThing').perform();
+  },
 
   // Layout
   // ---------------------------------------------------------------------------
